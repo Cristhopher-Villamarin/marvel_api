@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../controllers/api_marvel_controller.dart';
 import '../models/api_marvel_model.dart';
 import 'editar_dato_view.dart';
+import 'agregar_dato_view.dart';
 
 class DatosView extends StatefulWidget {
   @override
@@ -43,10 +44,36 @@ class _DatosViewState extends State<DatosView> {
         centerTitle: true,
         title: Image.asset(
           'assets/imagenes/logo Marvel.png', // Imagen del título
-          height: 150,
+          height: 80,
           fit: BoxFit.contain,
-
         ),
+        actions: [
+          // Botón de agregar
+          IconButton(
+            icon: const Icon(Icons.add, color: Colors.white),
+            onPressed: () async {
+              // Navegar a la vista para agregar un nuevo héroe
+              final nuevoDato = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AgregarDatoView()),
+              );
+
+              // Añadir el nuevo dato si no es nulo
+              if (nuevoDato != null) {
+                setState(() {
+                  _listaDatos.add(
+                    Datos(
+                      id: _listaDatos.length + 1, // Genera un id único
+                      nombre: nuevoDato['nombre'],
+                      descripcion: nuevoDato['descripcion'],
+                      imagen: 'assets/imagenes/logo Marvel.png', // Imagen por defecto
+                    ),
+                  );
+                });
+              }
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<List<Datos>>(
         future: _datosFuturos,
@@ -62,12 +89,11 @@ class _DatosViewState extends State<DatosView> {
           return GridView.builder(
             padding: const EdgeInsets.all(10),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, // Número de columnas
-              crossAxisSpacing: 10, // Espacio horizontal entre tarjetas
-              mainAxisSpacing: 10, // Espacio vertical entre tarjetas
-              childAspectRatio: 0.7, // Relación de aspecto ancho/alto
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 0.7,
             ),
-
             itemCount: _listaDatos.length,
             itemBuilder: (BuildContext context, int index) {
               final Datos dato = _listaDatos[index];
