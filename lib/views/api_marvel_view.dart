@@ -66,7 +66,7 @@ class _DatosViewState extends State<DatosView> {
                       id: _listaDatos.length + 1, // Genera un id único
                       nombre: nuevoDato['nombre'],
                       descripcion: nuevoDato['descripcion'],
-                      imagen: 'assets/imagenes/logo Marvel.png', // Imagen por defecto
+                      imagen: nuevoDato['imagen'],
                     ),
                   );
                 });
